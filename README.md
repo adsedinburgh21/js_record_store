@@ -19,4 +19,8 @@
 - Create a method that reports on the financial situation of the store. Cash and value of inventory.
 - Create a RecordCollector (or customer) constructor who can buy and sell records.
 - If you choose to, you can use lodash for enumerable functionality.
+<<<<<<< HEAD
 - Use TDD all the way through!
+=======
+- Use TDD all the way through!
+>>>>>>> 17882bcc34829d6da2ca05a8f7eaf4f5476b9bed
