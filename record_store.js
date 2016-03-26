@@ -37,7 +37,7 @@ RecordStore.prototype = {
     };
     return this.rangeOfRecords.length;
   },
-  // // could re-use this code without the .length on the end and do an each and do .artist, .title to list all records in stock (1 of each, not how many in stock)
+  // // could re-use this code without the .length on the end, eg on display mode on browser could do an each and do .artist and .title to list all records in stock (1 of each, whats in stock not how many in stock. could also run numberInStock on the each and it would show quantity in stock)
 
   inCurrentRange: function( record ){
     var result = false;
@@ -47,8 +47,23 @@ RecordStore.prototype = {
       };
     };
     return result;
-  }
+  },
 
+  numberInStock: function( record ){
+    var counter = 0;
+    for( var item of this.inventory){
+      if( (item.artist === record.artist) && (item.title === record.title) ){
+        counter += 1;
+      };
+    };
+    return counter;
+  }
+  //// could maybe refactor with map
+
+
+
+  // // pass in record, return how many in stock:
+  //// counter = 0, if record = item
 
 
   // detailInventory: function(){

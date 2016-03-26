@@ -80,8 +80,11 @@ describe("Record Store", function(){
   it('should return true when checking if record is in current range in stock', function(){
     store1.rangeOfRecords = [ record2 ];
     assert.equal( store1.inCurrentRange( record2 ), true);
-  })
+  });
 
+  it('should return the number of albums in stock of the same type - eg artist and title', function(){
+    assert.equal( store1.numberInStock( record1 ), 2 );
+  });
 
   // it('should detail inventory', function(){
   //   assert.deepEqual( store1.detailInventory(), {'Total Records': 4});
