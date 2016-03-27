@@ -35,6 +35,12 @@ describe("Record Store", function(){
       purchasePrice: 4,
       retailPrice: 8
     });
+    record6 = new Record( {
+      artist: 'Pink Floyd',
+      title: 'The Dark Side Of The Moon',
+      purchasePrice: 7,
+      retailPrice: 11
+    });
 
     store1 = new RecordStore( {
       name: 'Rockin Records',
@@ -73,22 +79,48 @@ describe("Record Store", function(){
     assert.equal( store1.totalRecordsInInventory(), 5);
   });
 
-  it('should return the range -eg number of different records- in stock', function(){
-    assert.equal( store1.rangeOfRecordsInStock(), 4);
+  it('should return the number of different records in stock', function(){
+    assert.equal( store1.numberOfDifferentRecords(), 4);
   });
 
+  it('should return an array of unique records - only 1 of each copy no doubles', function(){
+    assert.deepEqual( store1.rangeOfRecordsInStock(), [ record1, record2, record3, record4 ])
+  })
+
   it('should return true when checking if record is in current range in stock', function(){
-    store1.rangeOfRecords = [ record2 ];
-    assert.equal( store1.inCurrentRange( record2 ), true);
+    store1.rangeOfRecords = [ record1 ];
+    assert.equal( store1.inCurrentRange( record5 ), true);
+  });
+
+  it('should return false when checking if record is in current range in stock', function(){
+    store1.rangeOfRecords = [ record1 ];
+    assert.equal( store1.inCurrentRange( record2 ), false);
   });
 
   it('should return the number of albums in stock of the same type - eg artist and title', function(){
     assert.equal( store1.numberInStock( record1 ), 2 );
   });
 
-  // it('should detail inventory', function(){
-  //   assert.deepEqual( store1.detailInventory(), {'Total Records': 4});
-  // });
+  it('should increase shop cash by retail price of the record', function(){
+    store1.sell( record1 );
+    assert.equal( store1.cash, 258);
+  });
+
+  it('should remove record from the inventory', function(){
+    store1.removeFromInventory( record3 );
+    assert.deepEqual( store1.inventory, [ record1, record2, record4, record5 ] );
+  });
+
+  it('should reduce the store cash by the purchase price of the record', function(){
+    store1.buy( record6 );
+    assert.equal( store1.cash, 243 )
+  });
+
+  it('should add the record to the inventory', function(){
+    store1.buy( record6 );
+    assert.deepEqual( store1.inventory, [ record1, record2, record3, record4, record5, record6 ]);
+  });
+
 
 
 });

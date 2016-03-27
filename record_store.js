@@ -28,6 +28,13 @@ RecordStore.prototype = {
     return this.inventory.length;
   },
 
+  numberOfDifferentRecords: function(){
+    return this.rangeOfRecordsInStock().length;
+  },
+
+
+
+// // rangeOfRecordsInStock lists all stocked records - 1 of each, no doubles. In a display model could then do each on the array that is returned and then list details of each record, eg. record.title, record.artist, record.retailPrice, store.numberInStock( record )
   rangeOfRecordsInStock: function(){
     this.rangeOfRecords = [ ];
     for( var record of this.inventory){
@@ -35,9 +42,8 @@ RecordStore.prototype = {
         this.rangeOfRecords.push( record );
       };
     };
-    return this.rangeOfRecords.length;
+    return this.rangeOfRecords;
   },
-  // // could re-use this code without the .length on the end, eg on display mode on browser could do an each and do .artist and .title to list all records in stock (1 of each, whats in stock not how many in stock. could also run numberInStock on the each and it would show quantity in stock)
 
   inCurrentRange: function( record ){
     var result = false;
@@ -57,20 +63,23 @@ RecordStore.prototype = {
       };
     };
     return counter;
-  }
+  },
   //// could maybe refactor with map
 
+  sell: function( record ){ 
+      this.cash += record.retailPrice;
+      this.removeFromInventory( record );
+    },
 
+  removeFromInventory: function( record ){
+    var index = this.inventory.indexOf( record );
+    this.inventory.splice( index, 1);
+  },
 
-  // // pass in record, return how many in stock:
-  //// counter = 0, if record = item
-
-
-  // detailInventory: function(){
-  //   return {
-  //     'Total Records': this.totalRecordsInInventory()
-  //   }
-  // },
+  buy: function( record ){
+    this.cash -= record.purchasePrice;
+    this.inventory.push( record );
+  },
 
 }
 

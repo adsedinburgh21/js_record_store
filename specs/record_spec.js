@@ -2,7 +2,7 @@ var assert = require('chai').assert;
 var Record = require('../record.js');
 
 
-describe("Records", function(){
+describe("Record", function(){
   beforeEach(function(){
     record1 = new Record( {
       artist: 'AC/DC',
