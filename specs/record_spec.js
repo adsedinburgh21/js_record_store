@@ -4,6 +4,8 @@ var Record = require('../record.js');
 
 describe("Record", function(){
   beforeEach(function(){
+
+    //// RECORDS  ////
     record1 = new Record( {
       artist: 'AC/DC',
       title: 'Powerage',
@@ -12,6 +14,7 @@ describe("Record", function(){
     });
   });
 
+    //// TESTS  ////
   it("should have an artist", function(){
     assert.equal( record1.artist, 'AC/DC' )
   });

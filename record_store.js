@@ -34,7 +34,7 @@ RecordStore.prototype = {
 
 
 
-// // rangeOfRecordsInStock lists all stocked records - 1 of each, no doubles. In a display model could then do each on the array that is returned and then list details of each record, eg. record.title, record.artist, record.retailPrice, store.numberInStock( record )
+// // rangeOfRecordsInStock lists all stocked records - 1 of each, no doubles. In a display model (eg. /records INDEX) could then do each on the array that is returned and then list details of each record, eg. record.title, record.artist, record.retailPrice, store.quantityInStock( record )
   rangeOfRecordsInStock: function(){
     this.rangeOfRecords = [ ];
     for( var record of this.inventory){
@@ -55,7 +55,7 @@ RecordStore.prototype = {
     return result;
   },
 
-  numberInStock: function( record ){
+  quantityInStock: function( record ){
     var counter = 0;
     for( var item of this.inventory){
       if( (item.artist === record.artist) && (item.title === record.title) ){
@@ -67,9 +67,14 @@ RecordStore.prototype = {
   //// could maybe refactor with map
 
   sell: function( record ){ 
-      this.cash += record.retailPrice;
-      this.removeFromInventory( record );
-    },
+    for( item of this.inventory){
+      if( (item.artist === record.artist) && (item.title === record.title) ){
+        this.cash += record.retailPrice;
+        this.removeFromInventory( record );
+        break;
+      };
+    };
+  },
 
   removeFromInventory: function( record ){
     var index = this.inventory.indexOf( record );
@@ -81,7 +86,76 @@ RecordStore.prototype = {
     this.inventory.push( record );
   },
 
-}
+  //// Search functions will not list multiple records of same type (artist & title), only lists one of each.
+  searchRecordArtist: function( recordArtist ){
+    var result = [];
+    for( record of this.rangeOfRecordsInStock() ){
+      if( record.artist === recordArtist ){
+        result.push( record );
+      };
+    };
+    return result;
+  },
+
+  searchRecordTitle: function( recordTitle ){
+    var result = [];
+    for( record of this.rangeOfRecordsInStock() ){
+      if( record.title === recordTitle ){
+        result.push( record );
+      };
+    };
+    return result;
+  },
+
+  searchRetailPriceBetween: function( lowPrice, highPrice ){
+    var result = [];
+    for( record of this.rangeOfRecordsInStock() ){
+      if( (record.retailPrice >= lowPrice) && (record.retailPrice <= highPrice) ){
+        result.push( record );
+      };
+    };
+    return result;
+  },
+
+  //// Inventory Count functions include multiples of records and is for managing stock.
+  inventoryCountRecordArtist: function( recordArtist ){
+    var result = [];
+    for( record of this.inventory ){
+      if( record.artist === recordArtist ){
+        result.push( record );
+      };
+    };
+    return result;
+  },
+
+  inventoryCountRecordTitle: function( recordTitle ){
+    var result = [];
+    for( record of this.inventory ){
+      if( record.title === recordTitle ){
+        result.push( record );
+      };
+    };
+    return result;
+  },
+
+  inventoryCountRetailPriceBetween: function( lowPrice, highPrice ){
+    var result = [];
+    for( record of this.inventory ){
+      if( (record.retailPrice >= lowPrice) && (record.retailPrice <= highPrice) ){
+        result.push( record );
+      };
+    };
+    return result;
+  }
+
+  // searchInventory: function(searchField, searchQuery){
+  //   return this.searchField( searchQuery );
+  // }
+
+  //// Could add function to set record purchase and retail price. - where? store or record?
+  //// How could I have put record purchase and retail price in store rather than record? Dont like the idea of passing record to customer with purchase and retail price attached.
+
+};
 
 
 module.exports = RecordStore;

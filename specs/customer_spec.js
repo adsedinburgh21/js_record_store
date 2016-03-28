@@ -5,7 +5,10 @@ var Record = require('../record.js');
 
 
 describe("Customer", function(){
+  
   beforeEach(function(){
+
+    //// CUSTOMERS  ////
     customer1 = new Customer( {
       name: 'David',
       cash: 50
@@ -15,6 +18,7 @@ describe("Customer", function(){
       cash: 5
     });
 
+    //// RECORDS  ////
     record1 = new Record( {
       artist: 'AC/DC',
       title: 'Powerage',
@@ -35,6 +39,21 @@ describe("Customer", function(){
     });
   });
 
+
+    //// TESTS  ////
+  it('should have a name', function(){
+    assert.equal( customer1.name, 'David')
+  });
+
+  it('should have a cash balance', function(){
+    assert.equal( customer1.cash, 50)
+  });
+
+  it('should have an empty record collection', function(){
+    assert.deepEqual( customer1.recordCollection, [ ] )
+  });
+
+  // ** Purchase Records  ** //
   it('buy should reduce the customer cash by retailPrice of record', function(){
     customer1.buy( record1 );
     assert.equal( customer1.cash, 42 );
@@ -51,6 +70,7 @@ describe("Customer", function(){
     assert.deepEqual( customer2.recordCollection, [ ] );
   });
 
+  // ** Sell Records  ** //
   it('should remove record from record collection', function(){
     customer1.recordCollection = [ record1, record2 ];
     customer1.removeFromRecordCollection( record2 );
@@ -63,6 +83,12 @@ describe("Customer", function(){
     assert.equal( customer1.cash, 56 );
   });
 
-// // need to test for sell and remove from collection
+  it('should not be able to sell record that is not in record collection', function(){
+    customer1.recordCollection = [ record1 ];
+    customer1.sell( record2 );
+    assert.deepEqual( customer1.recordCollection, [ record1 ] );
+    assert.equal( customer1.cash, 50 );
+  });
+
 
 });
